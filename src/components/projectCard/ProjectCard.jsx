@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./ProjectCard.scss";
 const ProjectCard = ({ item }) => {
-  console.log(item.username);
   return (
     <Link to={`/gigs?cat=${item.cat}`} className="link">
       <div className="projectCard">
