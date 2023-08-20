@@ -54,7 +54,9 @@ const Navbar = () => {
               <Link to="/login" className="link">
                 Sign in
               </Link>
-              <button onClick={() => navigate("/register")}>Join</button>
+              {pathname !== "/register" && (
+                <button onClick={() => navigate("/register")}>Join</button>
+              )}
             </>
           )}
           {currentUser && (
