@@ -1,25 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "../../utils/axiosInstance";
 import "./GigCard.scss";
 const GigCard = ({ item }) => {
+  const { data, isError, isLoading } = useQuery({
+    queryKey: [item.userId],
+    queryFn: () =>
+      axios.get(`user/${item.userId}`).then((response) => response.data.user),
+  });
+
   return (
-    <Link to="/gig/:123" className="link">
+    <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
-        <img src={item.img} alt="" />
+        <img src={item.cover} alt="" />
         <div className="info">
-          <div className="user">
-            <img src={item.pp} alt="" />
-            <span>{item.username}</span>
-          </div>
+          {isLoading ? (
+            "loading..."
+          ) : isError ? (
+            ""
+          ) : (
+            <div className="user">
+              <img src={data.img || "/img/noavatar.jpg"} alt="" />
+              <span>{data.username}</span>
+            </div>
+          )}
           <p>{item.desc}</p>
           <div className="star">
-            <img src="./img/star.png" alt="star" />
-            <span>{item.star}</span>
+            {Array(Math.round(item.totalStars / item.starNumber))
+              .fill()
+              .map((item, i) => (
+                <img src="/img/star.png" alt="" key={i} />
+              ))}
+            <span>
+              {" "}
+              {!isNaN(item.totalStars / item.starNumber) &&
+                Math.round(item.totalStars / item.starNumber)}
+            </span>
           </div>
         </div>
         <hr />
         <div className="details">
-          <img src="./img/heart.png" alt="" />
+          <img src="/img/heart.png" alt="" />
           <div className="price">
             <span>Starting At</span>
             <h2>₹{item.price}</h2>

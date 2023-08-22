@@ -21,7 +21,7 @@ const Home = () => {
           <div className="item">
             <h1>A whole world of freelance talent at your fingertips</h1>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <p>
@@ -29,7 +29,7 @@ const Home = () => {
               just project-based pricing
             </p>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <p>
@@ -37,7 +37,7 @@ const Home = () => {
               just project-based pricing
             </p>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <p>
@@ -45,7 +45,7 @@ const Home = () => {
               just project-based pricing
             </p>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <p>
@@ -54,7 +54,7 @@ const Home = () => {
             </p>
           </div>
           <div className="item">
-            <video src="./img/video.mp4" controls></video>
+            <video src="/img/video.mp4" controls></video>
           </div>
         </div>
       </div>
@@ -70,15 +70,15 @@ const Home = () => {
               dedicated to bussiness
             </p>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <div className="title">
-              <img src="./img/check.png" alt="check" />
+              <img src="/img/check.png" alt="check" />
               The best for every buget
             </div>
             <button>Explore Gigs Bussiness</button>
