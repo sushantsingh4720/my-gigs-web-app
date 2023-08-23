@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axiosInstance";
+import { AuthContext } from "../../store/AuthContext";
 const Login = () => {
+  const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [user, setUser] = useState({
     username: "",
@@ -16,6 +18,7 @@ const Login = () => {
   };
 
   const onSubmitHandler = async (e) => {
+    dispatch({ type: "LOGIN_REQUEST" });
     e.preventDefault();
     await axios
       .post("auth/login", user, {
@@ -23,12 +26,13 @@ const Login = () => {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => JSON.stringify(response.data.info))
-      .then((data) => {
-        localStorage.setItem("currentUser", data);
+      .then((response) => {
+        dispatch({ type: "LOGIN_SUCCESS", payload: response.data.info });
+
         navigate("/");
       })
       .catch((error) => {
+        dispatch({ type: "LOGIN_FAIL" });
         setError(error.response.data.message);
       });
   };

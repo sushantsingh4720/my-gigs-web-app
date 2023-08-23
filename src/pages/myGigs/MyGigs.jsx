@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import "./MyGigs.scss";
 import axios from "../../utils/axiosInstance";
+import { AuthContext } from "../../store/AuthContext";
 function MyGigs() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { state } = useContext(AuthContext);
+
   const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery({
     queryKey: ["myGigs"],
     queryFn: () =>
       axios
-        .get(`gig/allGigs?userId=${currentUser._id}`)
+        .get(`gig/allGigs?userId=${state.user._id}`)
         .then((response) => response.data.gigs),
   });
   const mutation = useMutation({
@@ -34,8 +36,8 @@ function MyGigs() {
       ) : (
         <div className="container">
           <div className="title">
-            <h1>{currentUser.isSeller ? "Gigs" : "Orders"}</h1>
-            {currentUser.isSeller && (
+            <h1>{state.user.isSeller ? "Gigs" : "Orders"}</h1>
+            {state.user.isSeller && (
               <Link to="/add" className="link">
                 <button>Add New Gig</button>
               </Link>

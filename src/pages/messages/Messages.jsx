@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Messages.scss";
+import { AuthContext } from "../../store/AuthContext";
 import axios from "../../utils/axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 const Messages = () => {
+  const { state } = useContext(AuthContext);
   const queryClient = useQueryClient();
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
@@ -38,7 +40,7 @@ const Messages = () => {
           <table>
             <thead>
               <tr>
-                <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
+                <th>{state.user.isSeller ? "Buyer" : "Seller"}</th>
                 <th>Last Message</th>
                 <th>Date</th>
                 <th>Action</th>
@@ -49,14 +51,14 @@ const Messages = () => {
                 <tr
                   key={message.id}
                   className={
-                    (currentUser.isSeller && !message.readBySeller) ||
-                    (!currentUser.isSeller && !message.readByBuyer)
+                    (state.user.isSeller && !message.readBySeller) ||
+                    (!state.user.isSeller && !message.readByBuyer)
                       ? "active"
                       : ""
                   }
                 >
                   <td>
-                    {currentUser.isSeller ? message.buyerId : message.sellerId}
+                    {state.user.isSeller ? message.buyerId : message.sellerId}
                   </td>
                   <td>
                     <Link to={`/message/${message.id}`} className="link">
@@ -65,8 +67,8 @@ const Messages = () => {
                   </td>
                   <td>{moment(message.updatedAt).fromNow()}</td>
                   <td>
-                    {(currentUser.isSeller && !message.readBySeller) ||
-                    (!currentUser.isSeller && !message.readByBuyer) ? (
+                    {(state.user.isSeller && !message.readBySeller) ||
+                    (!state.user.isSeller && !message.readByBuyer) ? (
                       <button onClick={() => markAsReadHandler(message.id)}>
                         Mark as Read
                       </button>

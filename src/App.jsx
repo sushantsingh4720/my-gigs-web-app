@@ -1,5 +1,11 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
+import { AuthContext } from "./store/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
@@ -17,8 +23,18 @@ import Payment from "./pages/payment/Payment";
 import Success from "./pages/success/Success";
 import "./App.scss";
 function App() {
-  const queryClient = new QueryClient();
+  const { state } = useContext(AuthContext);
+  console.log(state);
 
+  const queryClient = new QueryClient();
+  const ProtectedRoute = ({ children, isSeller }) => {
+    if (!state.isAuthenticated) return <Navigate to="/login" />;
+
+    if (isSeller === true && state.user.isSeller !== true)
+      return <Navigate to="/Register" />;
+
+    return children;
+  };
   const Layout = () => {
     return (
       <div>
@@ -36,17 +52,86 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/", element: <Home /> },
-        { path: "/gig/:id", element: <Gig /> },
-        { path: "/gigs", element: <Gigs /> },
-        { path: "/myGigs", element: <MyGigs /> },
-        { path: "/orders", element: <Orders /> },
-        { path: "/messages", element: <Messages /> },
-        { path: "/message/:id", element: <Message /> },
-        { path: "/add", element: <Add /> },
+        {
+          path: "/gig/:id",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Gig />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/gigs",
+          element: (
+            <ProtectedRoute>
+              <Gigs />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/myGigs",
+          element: (
+            <ProtectedRoute isSeller={true}>
+              <MyGigs />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/orders",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Orders />{" "}
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/messages",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Messages />{" "}
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/message/:id",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Message />{" "}
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/add",
+          element: (
+            <ProtectedRoute isSeller={true}>
+              <Add />
+            </ProtectedRoute>
+          ),
+        },
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
-        { path: "/payment/:id", element: <Payment /> },
-        { path: "/success", element: <Success /> },
+        {
+          path: "/payment/:id",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Payment />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/success",
+          element: (
+            <ProtectedRoute>
+              {" "}
+              <Success />{" "}
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
   ]);

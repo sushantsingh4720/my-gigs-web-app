@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "../../utils/axiosInstance";
 import "./Message.scss";
+import { AuthContext } from "../../store/AuthContext";
 
 const Message = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { state } = useContext(AuthContext);
+
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery({
@@ -44,14 +46,14 @@ const Message = () => {
             : data.map((message) => (
                 <div
                   className={
-                    message.userId === currentUser._id ? "item owner" : "item"
+                    message.userId === state.user._id ? "item owner" : "item"
                   }
                   key={message._id}
                 >
                   <img
                     src={
-                      message.userId === currentUser._id
-                        ? currentUser.img
+                      message.userId === state.user._id
+                        ? state.user.img
                         : "/img/user.png"
                     }
                     alt=""

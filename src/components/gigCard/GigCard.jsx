@@ -25,13 +25,12 @@ const GigCard = ({ item }) => {
               <span>{data.username}</span>
             </div>
           )}
-          <p>{item.desc}</p>
+          <p>{item.title}</p>
           <div className="star">
-            {Array(Math.round(item.totalStars / item.starNumber))
-              .fill()
-              .map((item, i) => (
-                <img src="/img/star.png" alt="" key={i} />
-              ))}
+            {!isNaN(item.totalStars / item.starNumber) &&
+              Array(Math.round(item.totalStars / item.starNumber))
+                .fill()
+                .map((item, i) => <img src="/img/star.png" alt="" key={i} />)}
             <span>
               {" "}
               {!isNaN(item.totalStars / item.starNumber) &&

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Gig.scss";
 import { useQuery } from "@tanstack/react-query";
 import { Slider } from "infinite-react-carousel/lib";
 import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../store/AuthContext";
 import axios from "../../utils/axiosInstance";
 import ReviewsCard from "../../components/reviewsCard/ReviewsCard";
 function Gig() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { state } = useContext(AuthContext);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isError, isLoading } = useQuery({
@@ -161,9 +163,9 @@ function Gig() {
               ))}
             </div>
             <button
-              disabled={currentUser.isSeller}
+              disabled={state.user.isSeller}
               style={{
-                backgroundColor: currentUser.isSeller ? "#ccc" : "#1dbf73",
+                backgroundColor: state.user.isSeller ? "#ccc" : "#1dbf73",
               }}
               onClick={() => navigate(`/payment/${id}`)}
             >

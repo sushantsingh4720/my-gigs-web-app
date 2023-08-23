@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import "./Navbar.scss";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../utils/axiosInstance";
+import { AuthContext } from "../../store/AuthContext";
 
 const Navbar = () => {
+  const { state, dispatch } = useContext(AuthContext);
   const [isActive, setIsActive] = useState(false);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
@@ -19,13 +21,12 @@ const Navbar = () => {
       window.removeEventListener("scroll", isActiveHandler);
     };
   }, []);
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
   const logoutHandler = async () => {
     await axios
       .post("auth/logout")
-      .then((response) => {
-        console.log(response.data.message);
-        localStorage.removeItem("currentUser");
+      .then(() => {
+        dispatch({ type: "LOGOUT_SUCCESS" });
         navigate("/");
       })
       .catch((error) => {
@@ -46,26 +47,28 @@ const Navbar = () => {
           <span>Explore</span>
           <span>English</span>
 
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {!state.user?.isSeller && <span>Become a Seller</span>}
 
-          {!currentUser && (
+          {!state.isAuthenticated && (
             <>
               {" "}
-              <Link to="/login" className="link">
-                Sign in
-              </Link>
+              {pathname !== "/login" && (
+                <Link to="/login" className="link">
+                  Sign in
+                </Link>
+              )}
               {pathname !== "/register" && (
                 <button onClick={() => navigate("/register")}>Join</button>
               )}
             </>
           )}
-          {currentUser && (
+          {state.isAuthenticated && (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img src={currentUser.img || "/img/user.png"} alt="logo" />
-              <span>{currentUser.username}</span>
+              <img src={state.user.img || "/img/user.png"} alt="logo" />
+              <span>{state.user.username}</span>
               {open && (
                 <div className="options">
-                  {currentUser?.isSeller && (
+                  {state.user?.isSeller && (
                     <>
                       <Link to="/myGigs" className="link">
                         Gigs
