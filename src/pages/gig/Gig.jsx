@@ -2,12 +2,12 @@ import React from "react";
 import "./Gig.scss";
 import { useQuery } from "@tanstack/react-query";
 import { Slider } from "infinite-react-carousel/lib";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../utils/axiosInstance";
 import ReviewsCard from "../../components/reviewsCard/ReviewsCard";
 function Gig() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data, isError, isLoading } = useQuery({
     queryKey: [id],
@@ -165,6 +165,7 @@ function Gig() {
               style={{
                 backgroundColor: currentUser.isSeller ? "#ccc" : "#1dbf73",
               }}
+              onClick={() => navigate(`/payment/${id}`)}
             >
               Continue
             </button>

@@ -13,6 +13,8 @@ import Message from "./pages/message/Message";
 import Add from "./pages/add/Add";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
+import Payment from "./pages/payment/Payment";
+import Success from "./pages/success/Success";
 import "./App.scss";
 function App() {
   const queryClient = new QueryClient();
@@ -43,6 +45,8 @@ function App() {
         { path: "/add", element: <Add /> },
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
+        { path: "/payment/:id", element: <Payment /> },
+        { path: "/success", element: <Success /> },
       ],
     },
   ]);

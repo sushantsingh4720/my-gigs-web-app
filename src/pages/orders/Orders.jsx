@@ -16,7 +16,7 @@ const Orders = () => {
     const buyerId = order.buyerId;
     const id = sellerId + buyerId;
     try {
-      const response = await axios.get(`conversations/sigleConversation/${id}`);
+      const response = await axios.get(`conversations/sigle/${id}`);
       const conversationId = response.data.conversation.id;
       navigate(`/message/${conversationId}`);
     } catch (error) {
