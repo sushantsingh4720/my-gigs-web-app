@@ -1,33 +1,21 @@
 import React from "react";
 import "./ReviewCard.scss";
-import { useQuery } from "@tanstack/react-query";
-import axios from "../../utils/axiosInstance";
+
 const ReviewCard = ({ review }) => {
-  const { isLoading, error, data } = useQuery({
-    queryKey: [review.userId],
-    queryFn: () =>
-      axios.get(`/user/${review.userId}`).then((res) => {
-        return res.data.user;
-      }),
-  });
+  const { userId: userData } = review;
 
   return (
     <div className="review">
-      {isLoading ? (
-        "loading"
-      ) : error ? (
-        "error"
-      ) : (
-        <div className="user">
-          <img className="pp" src={data.img || "/img/noavatar.jpg"} alt="" />
-          <div className="info">
-            <span>{data.username}</span>
-            <div className="country">
-              <span>{data.country}</span>
-            </div>
+      <div className="user">
+        <img className="pp" src={userData.img || "/img/noavatar.jpg"} alt="" />
+        <div className="info">
+          <span>{userData.username}</span>
+          <div className="country">
+            <span>{userData.country}</span>
           </div>
         </div>
-      )}
+      </div>
+
       <div className="stars">
         {Array(review.star)
           .fill()

@@ -1,30 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import axios from "../../utils/axiosInstance";
+
 import "./GigCard.scss";
 const GigCard = ({ item }) => {
-  const { data, isError, isLoading } = useQuery({
-    queryKey: [item.userId],
-    queryFn: () =>
-      axios.get(`user/${item.userId}`).then((response) => response.data.user),
-  });
+  const { userId: data } = item;
 
   return (
     <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
         <img src={item.cover} alt="" />
         <div className="info">
-          {isLoading ? (
-            "loading..."
-          ) : isError ? (
-            ""
-          ) : (
-            <div className="user">
-              <img src={data.img || "/img/noavatar.jpg"} alt="" />
-              <span>{data.username}</span>
-            </div>
-          )}
+          <div className="user">
+            <img src={data.img || "/img/noavatar.jpg"} alt="" />
+            <span>{data.username}</span>
+          </div>
           <p>{item.title}</p>
           <div className="star">
             {!isNaN(item.totalStars / item.starNumber) &&

@@ -5,9 +5,9 @@ const CatCard = ({ item }) => {
   return (
     <Link to={`/gigs?cat=${item.cat ? item.cat : ""}`} className="link">
       <div className="catCard">
-        <img src={item.img} alt="" />
-        <span className="description">{item.desc}</span>
+        <img src={item.cover} alt="" />
         <span className="title">{item.title}</span>
+        <span className="cat">{item.cat}</span>
       </div>
     </Link>
   );

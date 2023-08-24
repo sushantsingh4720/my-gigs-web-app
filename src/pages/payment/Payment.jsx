@@ -5,9 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import axios from "../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import CheckoutForm from "../../components/checkoutForm/CheckoutForm";
-const stripePromise = loadStripe(
-  "pk_test_51LdtHzSGcjqf2IgR3tUmNz3hgBdRP6V8Q3vOwCGdz5BgcrSH9QBhhjjWVA1s3EwMA9H8kmHz5OTevB7Akmd8S56o00MqDdvw3f"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 const Payment = () => {
   const [clientSecret, setClientSecret] = useState("");
 
@@ -17,6 +15,7 @@ const Payment = () => {
     const makeRequest = async () => {
       try {
         const res = await axios.post(`/orders/create-payment-intent/${id}`);
+
         setClientSecret(res.data.clientSecret);
       } catch (err) {
         console.log(err);

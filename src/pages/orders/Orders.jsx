@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "./Orders.scss";
 import axios from "../../utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../store/AuthContext";
 const Orders = () => {
+  const { state } = useContext(AuthContext);
   const navigate = useNavigate();
   const { data, error, isLoading } = useQuery({
     queryKey: ["orders"],
@@ -17,9 +19,18 @@ const Orders = () => {
     const id = sellerId + buyerId;
     try {
       const response = await axios.get(`conversations/sigle/${id}`);
-      const conversationId = response.data.conversation.id;
-      navigate(`/message/${conversationId}`);
+
+      const conversation = response.data.conversation;
+
+      navigate(
+        `/message/${conversation.id}?username=${
+          state.user.isSeller
+            ? conversation.buyerId.username
+            : conversation.sellerId.username
+        }`
+      );
     } catch (error) {
+      console.log(error);
       if (error.response.status === 404) {
         try {
           const createResponse = await axios.post(`conversations/create`, {
@@ -27,8 +38,14 @@ const Orders = () => {
             buyerId,
           });
 
-          const newConversationId = createResponse.data.createdConversation.id;
-          navigate(`/message/${newConversationId}`);
+          const newConversation = createResponse.data.createdConversation;
+          navigate(
+            `/message/${newConversation.id}?username=${
+              state.user.isSeller
+                ? newConversation.buyerId.username
+                : newConversation.sellerId.username
+            }`
+          );
         } catch (error) {
           console.log(error);
         }

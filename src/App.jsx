@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
 } from "react-router-dom";
+import axios from "./utils/axiosInstance";
 import { AuthContext } from "./store/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "./components/navbar/Navbar";
@@ -22,18 +23,23 @@ import Login from "./pages/login/Login";
 import Payment from "./pages/payment/Payment";
 import Success from "./pages/success/Success";
 import "./App.scss";
+import Loader from "./components/Loader/Loader";
 function App() {
-  const { state } = useContext(AuthContext);
-  console.log(state);
+  const { state, dispatch } = useContext(AuthContext);
 
   const queryClient = new QueryClient();
   const ProtectedRoute = ({ children, isSeller }) => {
-    if (!state.isAuthenticated) return <Navigate to="/login" />;
-
-    if (isSeller === true && state.user.isSeller !== true)
-      return <Navigate to="/Register" />;
-
-    return children;
+    if (state.loading === false) {
+      if (!state.isAuthenticated) {
+        return <Navigate to="/login" />;
+      } else if (isSeller && !state.user.isSeller) {
+        return <Navigate to="/register" />;
+      } else {
+        return children;
+      }
+    } else {
+      return <Loader />; // You might want to show a loading spinner here
+    }
   };
   const Layout = () => {
     return (
@@ -63,11 +69,7 @@ function App() {
         },
         {
           path: "/gigs",
-          element: (
-            <ProtectedRoute>
-              <Gigs />
-            </ProtectedRoute>
-          ),
+          element: <Gigs />,
         },
         {
           path: "/myGigs",
@@ -125,16 +127,25 @@ function App() {
         },
         {
           path: "/success",
-          element: (
-            <ProtectedRoute>
-              {" "}
-              <Success />{" "}
-            </ProtectedRoute>
-          ),
+          element: <Success />,
         },
       ],
     },
   ]);
+
+  const loadUser = async () => {
+    try {
+      dispatch({ type: "LOAD_USER_REQUEST" });
+      const response = await axios.get("user/me");
+      dispatch({ type: "LOAD_USER_SUCCESS", payload: response.data.user });
+    } catch (error) {
+      dispatch({ type: "LOAD_USER_FAIL" });
+      console.log(error.response.data);
+    }
+  };
+  useEffect(() => {
+    loadUser();
+  }, []);
   return <RouterProvider router={router} />;
 }
 

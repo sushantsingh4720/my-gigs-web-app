@@ -10,7 +10,6 @@ const Add = () => {
   const [uploading, setUploading] = useState(false);
   const [coverImage, setCoverImage] = useState(null);
   const [imageFiles, setImages] = useState([]);
-  console.log(state);
 
   const onChangeHandler = (e) => {
     dispatch({
@@ -75,10 +74,14 @@ const Add = () => {
             />
             <label htmlFor="">Category</label>
             <select id="cats" name="cat" onChange={onChangeHandler}>
+              <option value="" hidden>
+                choose option
+              </option>
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
               <option value="music">Music</option>
+              <option value="ai">Ai</option>
             </select>
             <div className="images">
               <div className="imagesInputs">

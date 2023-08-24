@@ -27,12 +27,12 @@ const Navbar = () => {
       .post("auth/logout")
       .then(() => {
         dispatch({ type: "LOGOUT_SUCCESS" });
-        navigate("/");
       })
       .catch((error) => {
         console.log(error.response.data);
       });
   };
+
   return (
     <div className={isActive || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
@@ -49,7 +49,7 @@ const Navbar = () => {
 
           {!state.user?.isSeller && <span>Become a Seller</span>}
 
-          {!state.isAuthenticated && (
+          {!state.isAuthenticated && state.loading === false && (
             <>
               {" "}
               {pathname !== "/login" && (

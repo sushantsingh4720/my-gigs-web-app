@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "../../utils/axiosInstance";
 import "./Message.scss";
@@ -9,6 +9,10 @@ const Message = () => {
   const { state } = useContext(AuthContext);
 
   const { id } = useParams();
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const username = queryParams.get("username");
+
   const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery({
     queryKey: ["messages"],
@@ -36,7 +40,8 @@ const Message = () => {
     <div className="message">
       <div className="container">
         <span className="breadcrumbs">
-          <Link to="/messages">Messages</Link> {">"}shubham{" >"}
+          <Link to="/messages">Messages</Link> {">"}
+          {username}
         </span>
         <div className="messages">
           {isLoading
@@ -46,15 +51,15 @@ const Message = () => {
             : data.map((message) => (
                 <div
                   className={
-                    message.userId === state.user._id ? "item owner" : "item"
+                    message.userId._id === state.user._id
+                      ? "item owner"
+                      : "item"
                   }
                   key={message._id}
                 >
                   <img
                     src={
-                      message.userId === state.user._id
-                        ? state.user.img
-                        : "/img/user.png"
+                      message.userId.img ? message.userId.img : "/img/user.png"
                     }
                     alt=""
                   />

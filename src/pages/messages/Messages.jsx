@@ -47,29 +47,42 @@ const Messages = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((message) => (
+              {data.map((conversation) => (
                 <tr
-                  key={message.id}
+                  key={conversation.id}
                   className={
-                    (state.user.isSeller && !message.readBySeller) ||
-                    (!state.user.isSeller && !message.readByBuyer)
+                    (state.user.isSeller && !conversation.readBySeller) ||
+                    (!state.user.isSeller && !conversation.readByBuyer)
                       ? "active"
                       : ""
                   }
                 >
                   <td>
-                    {state.user.isSeller ? message.buyerId : message.sellerId}
+                    {state.user.isSeller
+                      ? conversation.buyerId.username
+                      : conversation.sellerId.username}
                   </td>
                   <td>
-                    <Link to={`/message/${message.id}`} className="link">
-                      {message?.lastMessage?.substring(0, 100)}...
+                    <Link
+                      to={`/message/${
+                        conversation.sellerId._id + conversation.buyerId._id
+                      }?username=${
+                        state.user.isSeller
+                          ? conversation.buyerId.username
+                          : conversation.sellerId.username
+                      }`}
+                      className="link"
+                    >
+                      {conversation?.lastMessage?.substring(0, 100)}...
                     </Link>
                   </td>
-                  <td>{moment(message.updatedAt).fromNow()}</td>
+                  <td>{moment(conversation.updatedAt).fromNow()}</td>
                   <td>
-                    {(state.user.isSeller && !message.readBySeller) ||
-                    (!state.user.isSeller && !message.readByBuyer) ? (
-                      <button onClick={() => markAsReadHandler(message.id)}>
+                    {(state.user.isSeller && !conversation.readBySeller) ||
+                    (!state.user.isSeller && !conversation.readByBuyer) ? (
+                      <button
+                        onClick={() => markAsReadHandler(conversation.id)}
+                      >
                         Mark as Read
                       </button>
                     ) : (
