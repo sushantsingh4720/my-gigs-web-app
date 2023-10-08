@@ -14,7 +14,7 @@ function Gig() {
   const { data, isError, isLoading } = useQuery({
     queryKey: [id],
     queryFn: () =>
-      axios.get(`gig/SingleGig/${id}`).then((response) => response.data.gig),
+      axios.get(`/api/gig/SingleGig/${id}`).then((response) => response.data.gig),
   });
   let userData = {};
   if (!isLoading) userData = data.userId;

@@ -17,12 +17,12 @@ const Message = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
-      axios.get(`messages/${id}`).then((response) => response.data),
+      axios.get(`/api/messages/${id}`).then((response) => response.data),
   });
 
   const mutation = useMutation({
     mutationFn: (message) => {
-      return axios.post(`messages/create`, message);
+      return axios.post(`/api/messages/create`, message);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["messages"]);

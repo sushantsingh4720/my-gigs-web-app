@@ -136,11 +136,10 @@ function App() {
   const loadUser = async () => {
     try {
       dispatch({ type: "LOAD_USER_REQUEST" });
-      const response = await axios.get("user/me");
+      const response = await axios.get("/api/user/me");
       dispatch({ type: "LOAD_USER_SUCCESS", payload: response.data.user });
     } catch (error) {
       dispatch({ type: "LOAD_USER_FAIL" });
-      console.log(error.response.data);
     }
   };
   useEffect(() => {

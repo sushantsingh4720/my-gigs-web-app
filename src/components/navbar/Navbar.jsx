@@ -24,7 +24,7 @@ const Navbar = () => {
 
   const logoutHandler = async () => {
     await axios
-      .post("auth/logout")
+      .post("/api/auth/logout")
       .then(() => {
         dispatch({ type: "LOGOUT_SUCCESS" });
       })

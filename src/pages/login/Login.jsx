@@ -22,7 +22,7 @@ const Login = () => {
     dispatch({ type: "LOGIN_REQUEST" });
     e.preventDefault();
     await axios
-      .post("auth/login", user, {
+      .post("/api/auth/login", user, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -10,7 +10,7 @@ const Orders = () => {
   const navigate = useNavigate();
   const { data, error, isLoading } = useQuery({
     queryKey: ["orders"],
-    queryFn: () => axios.get(`orders`).then((response) => response.data),
+    queryFn: () => axios.get(`/api/orders`).then((response) => response.data),
   });
 
   const onClickMessageHandler = async (order) => {
@@ -18,7 +18,7 @@ const Orders = () => {
     const buyerId = order.buyerId;
     const id = sellerId + buyerId;
     try {
-      const response = await axios.get(`conversations/sigle/${id}`);
+      const response = await axios.get(`/api/conversations/sigle/${id}`);
 
       const conversation = response.data.conversation;
 
@@ -33,7 +33,7 @@ const Orders = () => {
       console.log(error);
       if (error.response.status === 404) {
         try {
-          const createResponse = await axios.post(`conversations/create`, {
+          const createResponse = await axios.post(`/api/conversations/create`, {
             sellerId,
             buyerId,
           });

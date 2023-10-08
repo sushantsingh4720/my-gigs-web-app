@@ -12,11 +12,11 @@ const Messages = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
-      axios.get(`conversations/all`).then((response) => response.data),
+      axios.get(`/api/conversations/all`).then((response) => response.data),
   });
   const mutation = useMutation({
     mutationFn: (id) => {
-      return axios.put(`conversations/update/${id}`);
+      return axios.put(`/api/conversations/update/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["conversations"]);

@@ -15,7 +15,7 @@ const Home = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["catGigs"],
     queryFn: () =>
-      axios.get(`gig/allGigs`).then((response) => response.data.gigs),
+      axios.get(`/api/gig/allGigs`).then((response) => response.data.gigs),
   });
   return (
     <>

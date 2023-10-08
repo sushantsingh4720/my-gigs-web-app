@@ -14,7 +14,7 @@ const Payment = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await axios.post(`/orders/create-payment-intent/${id}`);
+        const res = await axios.post(`/api//orders/create-payment-intent/${id}`);
 
         setClientSecret(res.data.clientSecret);
       } catch (err) {

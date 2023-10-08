@@ -31,7 +31,7 @@ const Register = () => {
     e.preventDefault();
     const url = await uploadFile(file);
     await axios
-      .post("/auth/register", { ...user, img: url })
+      .post("/api/auth/register", { ...user, img: url })
       .then((response) => response.data)
       .then((data) => {
         console.log(data.message);

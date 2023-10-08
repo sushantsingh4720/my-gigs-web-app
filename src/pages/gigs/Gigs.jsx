@@ -17,7 +17,7 @@ const Gigs = () => {
     queryFn: () =>
       axios
         .get(
-          `gig/allGigs${search}${minRef?.current?.value ? "&min=" : ""}${
+          `/api/gig/allGigs${search}${minRef?.current?.value ? "&min=" : ""}${
             minRef?.current?.value ? minRef.current.value : ""
           }${maxRef?.current?.value ? "&max=" : ""}${
             maxRef?.current?.value ? maxRef.current.value : ""

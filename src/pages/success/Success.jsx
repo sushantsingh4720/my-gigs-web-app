@@ -10,7 +10,7 @@ const Success = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        await axios.put("/orders", { payment_intent });
+        await axios.put("/api/orders", { payment_intent });
         setTimeout(() => {
           navigate("/orders");
         }, 5000);

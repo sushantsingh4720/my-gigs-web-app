@@ -12,12 +12,12 @@ function MyGigs() {
     queryKey: ["myGigs"],
     queryFn: () =>
       axios
-        .get(`gig/allGigs?userId=${state.user._id}`)
+        .get(`/api/gig/allGigs?userId=${state.user._id}`)
         .then((response) => response.data.gigs),
   });
   const mutation = useMutation({
     mutationFn: (id) => {
-      return axios.delete(`gig/delete/${id}`);
+      return axios.delete(`/api/gig/delete/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["myGigs"]);

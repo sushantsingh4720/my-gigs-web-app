@@ -47,7 +47,7 @@ const Add = () => {
 
   const mutation = useMutation({
     mutationFn: (gig) => {
-      return axios.post("gig/create", gig);
+      return axios.post("/api/gig/create", gig);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["myGigs"]);

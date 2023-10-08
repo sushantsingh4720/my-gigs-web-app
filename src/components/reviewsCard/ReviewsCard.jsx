@@ -8,14 +8,14 @@ const ReviewsCard = ({ gigId }) => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["reviews"],
     queryFn: () =>
-      axios.get(`/reviews/${gigId}`).then((res) => {
+      axios.get(`/api/reviews/${gigId}`).then((res) => {
         return res.data;
       }),
   });
 
   const mutation = useMutation({
     mutationFn: (review) => {
-      return axios.post("/reviews", review);
+      return axios.post("/api/reviews", review);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["reviews"]);
